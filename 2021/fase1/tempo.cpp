@@ -3,55 +3,39 @@
 using namespace std;
 
 int main(){
-    int n, p;
+    int n, p, t=1, add=0;
     cin >> n;
-    vector<long long> pe(101, -1), es(101, 0);
-    vector<bool> at(101, false);
-    bool fzr= false;
-    char op = 'T';
+    vector<long long> pe(110, 0), es(110, 0);
+    vector<bool> at(110, false);
+    char op;
     while(n--){
-        if(op == 'T'){
-            fzr = false;
-        }
         cin >> op >> p;
-        if(op == 'T'){
-            fzr = false;
-        }
-        if(fzr){
-            for (int i = 0; i < 101; i++){
-                if(at[i]){
-                    es[i] += 1;
-                }
-            }
-        }
+        
         if(op == 'R'){
+            t += add;
+            add = 1;
+            es[p] = t;
             at[p] = true;
         }
-        
         if(op == 'E'){
+            t += add;
+            add = 1;
+            pe[p] += t - es[p];
             at[p] = false;
-            if(pe[p] == -1){
-                pe[p] = 0;
-            }
-            pe[p] += es[p];
-            es[p] = 0;
         }
         if(op == 'T'){
-            for (int i = 0; i < 101; i++){
-                if(at[i]){
-                    es[i] += p;
-                }
-            }
+            t += p;
+            add = 0;
         }
-        fzr = true;
     }
-    for (int i = 0; i < 101; i++){
-        if(pe[i] > -1){
+    for (int i = 0; i <= 110; i++){
+        if(es[i]){
+            cout << i << " ";
             if(at[i]){
-                cout << i << " " << -1 << endl;
+                cout << -1 << endl;
             }
             else{
-                cout << i << " " << pe[i] << endl;
+                cout << pe[i] << endl;
             }
         }
     }
