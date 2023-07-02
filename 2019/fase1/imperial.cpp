@@ -2,46 +2,50 @@
 
 using namespace std;
 
-int main(){
-    int n;
-    cin >> n;
-    vector<int> nums(n), posi(501, -1);
-    for(int i = 0; i < n; i++){
-        cin >> nums[i];
-        if(posi[nums[i]] == -1){
-            posi[nums[i]] = i;
-        }
+int n,atual;
+int lista[1010];
+int p[1010];
+
+int calcula(int a, int b, int coratual, int pos, int resatual) {
+    if(pos > n) return resatual;
+    if(lista[pos] == coratual) {
+        resatual++;
+        if(coratual == a) coratual = b;
+        else coratual = a;
     }
-    int resp=1, possi, alt=1;
-    for (int i = 1; i <= 500; i++){
-        if(posi[i] != -1){
-            for (int j = 1; j <= 500; j++){
-                if(posi[j] != -1){
-                    if(i != j){ 
-                        possi = 0;
-                        for (int k = posi[i]; k < n; k++){
-                            if(alt == 1){
-                                if(nums[k] == i){
-                                    possi += 1;
-                                }
-                                alt = 0;
-                            }
-                            else{
-                                if(nums[k] == j){
-                                    possi += 1;
-                                }
-                                alt = 1;
-                            }
-                        }
-                        if(resp < possi){
-                            resp = possi;
-                        }
-                    }
+    if(pos == n) return resatual;
+
+    return calcula(a, b, coratual, pos+1, resatual);
+}
+
+int main() {
+    int res = 1;
+    cin >> n;
+
+    for(int i = 1; i <= n; i++) {
+        p[i] = -1;
+    }
+
+    for(int i = 1; i <= n; i++) {
+        int a;
+        cin >> a;
+        lista[i] = a;
+        if(p[a] == -1) p[a] = i;
+    }
+
+
+    for(int i = 1; i <= n; i++) {
+        if(p[i] != -1) {
+            for(int j = i+1; j <= n; j++) {
+                if(p[j] != -1) {
+                    int res1 = calcula(i,j,i,p[i],0);
+                    int res2 = calcula(j,i,j,p[j],0);
+                    int resatual = max(res1, res2);
+                    if(resatual > res) res = resatual;
                 }
-                
             }
         }
-        
     }
-    cout << resp << endl;
+
+    cout << res << endl;
 }
