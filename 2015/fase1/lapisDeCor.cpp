@@ -1,37 +1,66 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int main(){
-    int n;
-    cin >> n;
-    string a;
-    vector<string> matriz(n);
-    for (int i = 0; i < n; i++){
-        cin >> matriz[i];
-    }
+typedef long long ll;
 
-    queue<pair<int, int>> q;
+int n;
+ll INF= 0x3f3f3f3f;
+vector<vector<ll>> mt;
+
+int main(){
+    cin.tie(0) -> sync_with_stdio(0);
+    cin >> n;
+    string pala;
+    mt.resize(n, {});
+    queue<vector<int>> qq;
+    for (int i = 0; i < n; i++){
+        cin >> pala;
+        for (int j = 0; j < n; j++){
+            if(pala[j] == '0'){
+                mt[i].push_back(0);
+                qq.push({i, j, 0});
+            }
+            else{
+                mt[i].push_back(INF);
+            }
+        }
+    }
+    vector<int> at;
+    while(!qq.empty()){
+        at = qq.front();
+        qq.pop();
+        mt[at[0]][at[1]] = min(at[2], 9);
+        if(at[0] > 0 ){
+            if(mt[at[0]-1][at[1]] == INF){
+                mt[at[0]-1][at[1]] = at[2]+1;
+                qq.push({at[0]-1, at[1], at[2]+1});
+            }
+        }
+        if(at[1] > 0){
+            if(mt[at[0]][at[1]-1] == INF){
+                mt[at[0]][at[1]-1] = at[2]+1;
+                qq.push({at[0], at[1]-1, at[2]+1});
+            }
+        }
+        if(at[0]+1 < n){
+            if(mt[at[0]+1][at[1]] == INF){
+                mt[at[0]+1][at[1]] = at[2]+1;
+                qq.push({at[0]+1, at[1], at[2]+1});
+            }            
+        }
+        if(at[1]+1 < n){
+            if(mt[at[0]][at[1]+1] == INF){
+                mt[at[0]][at[1]+1] = at[2]+1;
+                qq.push({at[0], at[1]+1, at[2]+1});
+            }
+        }
+    }
+    
     for (int i = 0; i < n; i++){
         for (int j = 0; j < n; j++){
-            if(matriz[i][j] == '0'){
-                q.emplace(i, j);
-            }
+            cout << mt[i][j];
         }
-        }
-    int di[] = {-1,1,0,0}, dj[] = {0,0,-1,1};
-    while(!q.empty()){
-        auto [i, j] = q.front();
-        q.pop();
-
-        for (int k = 0; k < 4; k++){
-            int curi = i + di[k], curj = j + dj[k];
-            if(curi >= 0 && curi < n && curj >= 0 && curj < n){
-                if(matriz[curi][curj]){
-                    matriz[curi][curj] = min(char(matriz[i][j] + 1), '9');
-                }
-            }
-        }
-        
+        cout << "\n";
     }
 }

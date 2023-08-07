@@ -2,27 +2,27 @@
 
 using namespace std;
 
+typedef long long ll;
+
 int main(){
-    int n, m, resp = 0;
+    ll n, m, resp = 0;
     cin >> n >> m;
-    int nums[n], ops[m];
-    for (int i = 0; i < n; i++){
+    vector<ll> nums(n), ops(m), som(n, 0);
+    for (ll i = 0; i < n; i++){
         cin >> nums[i];
         resp += nums[i];
     }
-    for (int i = 0; i < m; i++){
+    for (ll i = 0; i < m; i++){
         cin >> ops[i];
     }
-    int comec=0, fim=0;
-    for(int i = 0; i < m; i++){
-        comec = ops[i] - nums[ops[i]-1]-1;
-        fim = ops[i] + nums[ops[i]-1]-1;
-        for (int j = max(comec, 0); j <= min(fim, n-1); j++){
-            if(nums[j] > 0){
-                resp -= 1;
-                nums[j] -= 1;
-            }
-        }
+    ll comec=0, fim=0, z=0;
+    cout << endl;
+    for(ll i = 0; i < m; i++){
+        fim = min(nums[ops[i]-1] + ops[i], n-1);
+        comec = max(ops[i] - nums[ops[i]-1] , z);
+        cout << nums[ops[i]-1] << " " << ops[i] << " " << comec << " " << fim << endl;
+        som[comec] += 1;
+        som[fim] -= 1;
     }
     cout << resp << "\n";
 }
