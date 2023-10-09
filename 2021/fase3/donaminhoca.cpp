@@ -7,7 +7,9 @@ vector<ll> dist;
 
 void dfs(ll v, ll p, ll d){
     dist[v] = d;
-    for (auto ch: adj[v])if(ch != p) dfs(ch, v, d+1);
+    for (auto ch: adj[v])if(ch != p){
+        dfs(ch, v, d+1);
+    }
 }
 
 int main(){

@@ -29,6 +29,6 @@ int main(){
     ll q;
     for(int i = 1; i <= n; i++) if(adj[i].size() == 1) q = i; 
     dfs(q);
-    k = k*2 + 1;
-    cout << (dist[q] + k - 1)/k << "\n";
+    k = k*2;
+    cout << (dist[q] + k)/k << "\n";
 }
